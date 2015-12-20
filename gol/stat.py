@@ -1,12 +1,14 @@
 __author__ = 'MrTrustworthy'
 
+from typing import List, Union
+
 
 class Stat:
     """
     Stat
     """
 
-    def __init__(self, *args):
+    def __init__(self, *args: List[int]) -> None:
 
         if len(args) == 3:
             self.min = args[0]
@@ -21,17 +23,17 @@ class Stat:
             self.max = args[0]
             self.val = self.max
 
-    def sub(self, amount, strict=False):
+    def sub(self, amount: int, strict: bool=False) -> None:
         if strict and self.val < amount:
             raise ValueError("Not enough to subtract", amount)
         self.val -= amount
 
-    def add(self, amount, force=False):
+    def add(self, amount: int, force: bool=False) -> None:
         self.val += amount
         if self.val > self.max and not force:
             self.val = self.max
 
-    def is_below(self):
+    def is_below(self) -> bool:
         return self.val < self.min
 
 

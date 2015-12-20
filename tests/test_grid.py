@@ -12,13 +12,13 @@ class TestGrid(unittest.TestCase):
 
         f = Field(Position(1, 2), True, 2, [])
         self.assertTrue(f.passable, "Field should be passable")
-        self.assertTrue(f.cost == 2, "Field movement cost should be 2")
+        self.assertTrue(f.passing_cost == 2, "Field movement cost should be 2")
         self.assertTrue(len(f.objects) == 0, "Field should contain no objects")
         self.assertTrue(isinstance(f.position, Position), "Field has no Position")
 
         f2 = Field(Position(3, 4), False, 100, [g])
         self.assertTrue(not f2.passable, "Field should notbe passable")
-        self.assertTrue(f2.cost is None, "Field movement cost should be NONE if not passable")
+        self.assertTrue(f2.passing_cost is None, "Field movement cost should be NONE if not passable")
         self.assertTrue(len(f2.objects) == 1, "Field should contain an objects")
         self.assertTrue(f2.objects[0] is g, "Field contains the wrong object")
         self.assertTrue(isinstance(f2.position, Position), "Field has no Position")
@@ -46,6 +46,10 @@ class TestGrid(unittest.TestCase):
         self.assertTrue(f.position == Position(3, 6), "Grid.GET returns wrong values")
 
         f = g.get((4, 5))
+        self.assertTrue(f is g.fields[4][5], "Grid.GET returns wrong values")
+        self.assertTrue(f.position == Position(4, 5), "Grid.GET returns wrong values")
+
+        f = g.get(Position(4, 5))
         self.assertTrue(f is g.fields[4][5], "Grid.GET returns wrong values")
         self.assertTrue(f.position == Position(4, 5), "Grid.GET returns wrong values")
 
@@ -108,3 +112,11 @@ class TestGrid(unittest.TestCase):
         self.assertTrue(path[0].position == Position(0, 0), "Pathfinding error")
         self.assertTrue(path[1].position == Position(1, 1) or path[1].position == Position(0, 1), "Pathfinding error")
         self.assertTrue(path[2].position == Position(1, 2), "Pathfinding error")
+
+    def test_pathfinding4(self):
+        g = self.test_grid()
+        g.get(Position(0, 1)).passable = False
+        path = g.get_path(Position(0, 0), Position(0, 2))
+        self.assertTrue(path[0].position == Position(0, 0), "Pathfinding error")
+        self.assertTrue(path[1].position == Position(1, 1), "Pathfinding error")
+        self.assertTrue(path[2].position == Position(0, 2), "Pathfinding error")

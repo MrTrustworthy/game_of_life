@@ -2,6 +2,7 @@ __author__ = 'MrTrustworthy'
 
 from enum import Enum
 from math import pow, sqrt
+from typing import List, Union
 
 
 class Gender(Enum):
@@ -14,7 +15,7 @@ class Position:
     Position is a simple helper object for 2d-positions with an x- and y-value
     """
 
-    def __init__(self, *args):
+    def __init__(self, *args: List[Union[int, tuple]]) -> None:
         """
         creates a position object either based on 2 values (x and y) or a (x, y) tuple
         :param args:
@@ -32,7 +33,7 @@ class Position:
         self.y = y
         self.tuple = (x, y)
 
-    def distance_to(self, other):
+    def distance_to(self, other: "Position") -> int:
         """
         calculates the line-of-sight distance between this position and another position
         :param other:
@@ -44,7 +45,7 @@ class Position:
 
         return sqrt(pow(abs(self.x - other.x), 2) + pow(abs(self.y - other.y), 2))
 
-    def in_range(self, other, distance):
+    def in_range(self, other: "Position", distance: float) -> bool:
         """
         returns whether this and another given position are distanced less than the given amount of each other
         :param other:
@@ -56,10 +57,17 @@ class Position:
 
         return self.distance_to(other) <= distance
 
-    def __eq__(self, other):
+    def __eq__(self, other: "Position") -> bool:
         """
         Returns true if both this and the other Position object have the same coordinates
         :param other:
         :return:
         """
         return self.x == other.x and self.y == other.y
+
+    def __repr__(self):
+        """
+        Gives x,y coords in print statements
+        :return:
+        """
+        return "Position Object: " + "(" + str(self.x) + ":" + str(self.y) + ")"

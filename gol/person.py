@@ -2,12 +2,12 @@ __author__ = 'MrTrustworthy'
 
 
 from gol.stat import Stat
-from gol.x_utils import Position
+from gol.x_utils import Position, Gender
 from gol.gameobject import GameObject
 
 
 class Person(GameObject):
-    def __init__(self, position, age, gender, level):
+    def __init__(self, position: Position, age: int, gender: Gender, level: int) -> None:
 
         if not isinstance(position, tuple):
             raise TypeError("Person constructor needs Tuple as Position-Argument")
